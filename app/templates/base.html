@@ -1,0 +1,40 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block head %}
+    {{ super () }}
+
+    <title>
+        {% block title  %}
+            Flask Platzi | 
+        {% endblock title %}
+    </title>
+    <!-- para referenciar una hoja de estilos preferida(css), 
+        stylesheet define un estilo preferido
+        alternate stylesheet define un estilo alterno -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+{% endblock head %}
+    
+{% block body %}
+
+    {% block navbar %}
+        {% include 'navbar.html' %}
+    {% endblock navbar %}
+  
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-success alert-dismissible">
+            <button type="button"
+                    data-dismiss="alert"
+                    class="close">&times;</button>
+                {{ message }}
+        </div>
+    {% endfor %}
+    {% block content %}
+
+    {% endblock content %}
+
+    {% block scripts %}
+        {{ super() }}
+    {% endblock scripts %}
+
+{% endblock body %}
