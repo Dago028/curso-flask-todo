@@ -63,4 +63,4 @@ def delete(todo_id):
     user_id = current_user.id 
     delete_todo(user_id=user_id, todo_id=todo_id)
 
-    redirect(url_for('hello'))
+    return redirect(url_for('hello'))
