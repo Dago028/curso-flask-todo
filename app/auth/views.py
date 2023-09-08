@@ -1,6 +1,6 @@
 from flask import render_template, session, redirect, flash, url_for
 from flask_login import login_user, login_required, logout_user
-from werkzeug.security import generate_password_hash #libreria para tratar contrasenhas
+from werkzeug.security import generate_password_hash, check_password_hash #libreria para tratar contrasenhas
 from app.forms import LoginForm
 
 from . import auth
@@ -23,15 +23,34 @@ def login():
         if user_doc.exists:
             password_from_db = user_doc.to_dict()['password']
             
-            if password == password_from_db:
+            if user_doc.to_dict() is not None:
+            
+                    if check_password_hash(user_doc.to_dict()['password'], password):
+                        user_data = UserData(username,password)
+                        user = UserModel(user_data)
+
+                        login_user(user)
+
+                        redirect(url_for('hello'))
+                    else:
+                        flash('Contraseña incorrecta')
+            
+            '''if password == password_from_db:
                 user_data = UserData(username, password)
                 user = UserModel(user_data)
+                user_doc = get_user(username)
+
+                if user_doc.to_dict() is not None:
+            
+                    if check_password_hash(user_doc.to_dict()['password'], password):
+                        user_data = UserData(username,password)
+                        user = UserModel(user_data)
 
                 login_user(user)
 
                 redirect(url_for('hello'))
             else:
-                flash('Contraseña incorrecta')
+                flash('Contraseña incorrecta') '''
         else:
             flash('El usuario no existe.')
         
